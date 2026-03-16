@@ -63,7 +63,23 @@
     .dots { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; max-width: 36px; }
     .dot { width: 7px; height: 7px; border-radius: 50%; }
 
-    .day-label { text-align: center; margin-bottom: 12px; font-size: 13px; color: #94A3B8; }
+    .day-label {
+      text-align: center; margin-bottom: 16px;
+      font-size: 16px; font-weight: 700; color: #f1f5f9;
+      background: #3d4f66; border-radius: 10px; padding: 10px 16px;
+      border-left: 4px solid #60A5FA;
+    }
+    .stats-sub-label {
+      background: #3d4f66; border-radius: 10px; padding: 10px 16px;
+      margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+    }
+    .stats-sub-label .month-text {
+      font-size: 16px; font-weight: 700; color: #f1f5f9;
+    }
+    .stats-sub-label .month-badge {
+      margin-left: auto; background: #60A5FA; color: #fff;
+      font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px;
+    }
     .habits-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; justify-content: center; }
     .habit-btn {
       display: flex; align-items: center; gap: 7px;
@@ -92,7 +108,7 @@
     .form-btns button { flex: 1; border: none; border-radius: 8px; padding: 9px 0; font-weight: 700; font-size: 14px; cursor: pointer; color: #fff; }
     .btn-cancel { background: #334155; }
 
-    .stats-sub { text-align: center; color: #94A3B8; font-size: 13px; margin-bottom: 24px; }
+    .stats-sub { display: none; }
     .stat-cards { display: flex; flex-direction: column; gap: 12px; }
     .stat-card { background: #3d4f66; border-radius: 16px; padding: 16px 18px; }
     .stat-title { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-weight: 700; font-size: 15px; color: #f1f5f9; }
@@ -354,7 +370,14 @@ function calcStats(hid, y, m) {
 }
 
 function renderStats() {
-  document.getElementById("stats-sub").textContent = `${calY}年 ${MONTHS[calM]} 基準`;
+  document.getElementById("stats-sub").textContent = "";
+  const existingLabel = document.getElementById("stats-month-label");
+  if (existingLabel) existingLabel.remove();
+  const labelEl = document.createElement("div");
+  labelEl.id = "stats-month-label";
+  labelEl.className = "stats-sub-label";
+  labelEl.innerHTML = `<span class="month-text">📅 ${calY}年 ${MONTHS[calM]}</span><span class="month-badge">今月</span>`;
+  document.getElementById("stat-cards").before(labelEl);
   const container = document.getElementById("stat-cards");
   container.innerHTML = "";
   if (habits.length === 0) { container.innerHTML = '<p class="empty">項目がまだありません</p>'; return; }
