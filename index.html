@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>習慣トラッカー</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="習慣トラッカー" />
+  <meta name="theme-color" content="#0f0f1a" />
+  <link rel="manifest" href="manifest.json" />
+  <!-- アイコン（SVGインライン生成） -->
+  <link rel="apple-touch-icon" href="icon.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f0f1a;
+      color: #f0f0f0;
+      font-family: -apple-system, 'Helvetica Neue', sans-serif;
+      min-height: 100vh;
+      padding-bottom: 80px;
+      padding-top: env(safe-area-inset-top);
+    }
+    #app { max-width: 420px; margin: 0 auto; padding: 20px 16px 0; }
+
+    /* Nav */
+    #bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #1a1a2e;
+      border-top: 1px solid #2a2a3e;
+      display: flex;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .nav-btn {
+      flex: 1; background: transparent; border: none;
+      padding: 12px 0 10px; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+    }
+    .nav-btn .icon { font-size: 20px; }
+    .nav-btn .label { font-size: 11px; font-weight: 600; color: #555; }
+    .nav-btn.active .label { color: #A29BFE; }
+    .nav-btn .bar { width: 24px; height: 2px; background: #A29BFE; border-radius: 2px; display: none; }
+    .nav-btn.active .bar { display: block; }
+
+    /* Calendar */
+    h1 { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 20px; letter-spacing: 2px; }
+    .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .month-nav button { background: transparent; border: none; color: #fff; font-size: 24px; cursor: pointer; padding: 0 12px; }
+    .month-nav span { font-weight: 700; font-size: 16px; }
+    .cal-wrap { background: #1a1a2e; border-radius: 16px; padding: 12px 8px; margin-bottom: 20px; }
+    .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 6px; }
+    .weekday { text-align: center; font-size: 11px; font-weight: 600; color: #888; padding-bottom: 4px; }
+    .weekday.sun { color: #FF6B6B; } .weekday.sat { color: #45B7D1; }
+    .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .day-cell {
+      border-radius: 10px; padding: 5px 2px 4px; cursor: pointer;
+      background: transparent; border: 1.5px solid transparent;
+      min-height: 52px; display: flex; flex-direction: column; align-items: center;
+    }
+    .day-cell.selected { background: #2d2d50; }
+    .day-cell.today { border-color: #A29BFE; }
+    .day-num { font-size: 12px; color: #ccc; margin-bottom: 3px; }
+    .day-cell.today .day-num { color: #A29BFE; font-weight: 700; }
+    .day-cell.selected .day-num { font-weight: 700; }
+    .dots { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; max-width: 36px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* Habit buttons */
+    .day-label { text-align: center; margin-bottom: 12px; font-size: 13px; color: #aaa; }
+    .habits-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; justify-content: center; }
+    .habit-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 9px 16px; border-radius: 50px;
+      font-weight: 600; font-size: 13px; cursor: pointer;
+      transition: all 0.15s; background: transparent;
+    }
+    .habit-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .habit-remove { margin-left: 4px; opacity: 0.5; font-size: 12px; cursor: pointer; background: none; border: none; color: inherit; }
+
+    /* Add form */
+    .add-btn {
+      width: 100%; background: transparent; border: 2px dashed #444;
+      border-radius: 12px; padding: 10px 0; color: #666;
+      font-size: 14px; cursor: pointer; font-weight: 600;
+    }
+    .add-form { background: #1a1a2e; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+    .add-form input {
+      width: 100%; background: #0f0f1a; border: 1px solid #333;
+      border-radius: 8px; padding: 8px 12px; color: #fff;
+      font-size: 14px; margin-bottom: 10px;
+    }
+    .color-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+    .color-swatch { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
+    .color-swatch.selected { border-color: #fff; }
+    .form-btns { display: flex; gap: 8px; }
+    .form-btns button { flex: 1; border: none; border-radius: 8px; padding: 9px 0; font-weight: 700; font-size: 14px; cursor: pointer; }
+    .btn-cancel { background: #333; color: #ccc; }
+
+    /* Stats */
+    .stats-sub { text-align: center; color: #666; font-size: 13px; margin-bottom: 24px; }
+    .stat-cards { display: flex; flex-direction: column; gap: 12px; }
+    .stat-card { background: #1a1a2e; border-radius: 16px; padding: 16px 18px; }
+    .stat-title { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-weight: 700; font-size: 15px; }
+    .stat-title-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .mini-card { background: #0f0f1a; border-radius: 10px; padding: 10px 8px; text-align: center; }
+    .mini-val { font-size: 22px; font-weight: 800; }
+    .mini-unit { font-size: 12px; font-weight: 400; color: #888; margin-left: 2px; }
+    .mini-label { font-size: 10px; color: #666; margin-top: 3px; }
+    .pct-header { display: flex; justify-content: space-between; font-size: 11px; color: #666; margin-bottom: 5px; }
+    .pct-bar-bg { background: #0f0f1a; border-radius: 99px; height: 6px; overflow: hidden; }
+    .pct-bar { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
+    .empty { text-align: center; color: #555; margin-top: 60px; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div id="app">
+  <!-- Calendar Page -->
+  <div id="page-calendar">
+    <h1>🗓 習慣トラッカー</h1>
+    <div class="month-nav">
+      <button onclick="prevMonth()">‹</button>
+      <span id="month-label"></span>
+      <button onclick="nextMonth()">›</button>
+    </div>
+    <div class="cal-wrap">
+      <div class="weekdays">
+        <div class="weekday sun">日</div>
+        <div class="weekday">月</div><div class="weekday">火</div>
+        <div class="weekday">水</div><div class="weekday">木</div>
+        <div class="weekday">金</div>
+        <div class="weekday sat">土</div>
+      </div>
+      <div class="days-grid" id="days-grid"></div>
+    </div>
+    <div class="day-label" id="day-label"></div>
+    <div class="habits-list" id="habits-list"></div>
+    <div id="add-area">
+      <button class="add-btn" onclick="showAddForm()">＋ 項目を追加</button>
+    </div>
+    <div class="add-form hidden" id="add-form">
+      <input type="text" id="new-name" placeholder="項目名を入力..." onkeydown="if(event.key==='Enter')addHabit()" />
+      <div class="color-grid" id="color-grid"></div>
+      <div class="form-btns">
+        <button id="add-confirm-btn" onclick="addHabit()">追加</button>
+        <button class="btn-cancel" onclick="hideAddForm()">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Page -->
+  <div id="page-stats" class="hidden">
+    <h1>📊 統計</h1>
+    <p class="stats-sub" id="stats-sub"></p>
+    <div class="stat-cards" id="stat-cards"></div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<div id="bottom-nav">
+  <button class="nav-btn active" id="nav-calendar" onclick="switchPage('calendar')">
+    <span class="icon">🗓</span>
+    <span class="label">カレンダー</span>
+    <span class="bar"></span>
+  </button>
+  <button class="nav-btn" id="nav-stats" onclick="switchPage('stats')">
+    <span class="icon">📊</span>
+    <span class="label">統計</span>
+    <span class="bar"></span>
+  </button>
+</div>
+
+<script>
+const MONTHS = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
+const PRESET_COLORS = ["#FF6B6B","#FF9F43","#FFD93D","#6BCB77","#4ECDC4","#45B7D1","#A29BFE","#FD79A8","#FDCB6E","#636E72"];
+const DEFAULT_HABITS = [
+  {id:"1",name:"ランニング",color:"#FF6B6B"},
+  {id:"2",name:"筋トレ",color:"#4ECDC4"},
+  {id:"3",name:"読書",color:"#FFD93D"},
+  {id:"4",name:"英語学習",color:"#A29BFE"},
+];
+
+const today = new Date();
+let calY = today.getFullYear(), calM = today.getMonth(), selDay = today.getDate();
+let habits = JSON.parse(localStorage.getItem("habits") || JSON.stringify(DEFAULT_HABITS));
+let records = JSON.parse(localStorage.getItem("records") || "{}");
+let newColor = "#FF6B6B";
+let curPage = "calendar";
+
+function save() {
+  localStorage.setItem("habits", JSON.stringify(habits));
+  localStorage.setItem("records", JSON.stringify(records));
+}
+
+function dateKey(y, m, d) { return `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`; }
+function genId() { return Math.random().toString(36).slice(2,9); }
+
+function switchPage(p) {
+  curPage = p;
+  document.getElementById("page-calendar").classList.toggle("hidden", p !== "calendar");
+  document.getElementById("page-stats").classList.toggle("hidden", p !== "stats");
+  document.getElementById("nav-calendar").classList.toggle("active", p === "calendar");
+  document.getElementById("nav-stats").classList.toggle("active", p === "stats");
+  if (p === "stats") renderStats();
+}
+
+function prevMonth() {
+  if (calM === 0) { calY--; calM = 11; } else calM--;
+  selDay = 1; render();
+}
+function nextMonth() {
+  if (calM === 11) { calY++; calM = 0; } else calM++;
+  selDay = 1; render();
+}
+
+function render() {
+  document.getElementById("month-label").textContent = `${calY}年 ${MONTHS[calM]}`;
+  document.getElementById("day-label").textContent = `${calY}年${MONTHS[calM]}${selDay}日 の記録`;
+
+  // Calendar grid
+  const first = new Date(calY, calM, 1).getDay();
+  const total = new Date(calY, calM+1, 0).getDate();
+  const grid = document.getElementById("days-grid");
+  grid.innerHTML = "";
+  for (let i = 0; i < first; i++) { const e = document.createElement("div"); grid.appendChild(e); }
+  for (let d = 1; d <= total; d++) {
+    const key = dateKey(calY, calM, d);
+    const dayH = records[key] || [];
+    const isSel = d === selDay;
+    const isTod = d === today.getDate() && calM === today.getMonth() && calY === today.getFullYear();
+    const cell = document.createElement("div");
+    cell.className = "day-cell" + (isSel?" selected":"") + (isTod?" today":"");
+    cell.onclick = () => { selDay = d; render(); };
+    const num = document.createElement("div");
+    num.className = "day-num"; num.textContent = d;
+    cell.appendChild(num);
+    const dots = document.createElement("div");
+    dots.className = "dots";
+    dayH.forEach(hid => {
+      const h = habits.find(x => x.id === hid);
+      if (!h) return;
+      const dot = document.createElement("div");
+      dot.className = "dot"; dot.style.background = h.color;
+      dots.appendChild(dot);
+    });
+    cell.appendChild(dots);
+    grid.appendChild(cell);
+  }
+
+  // Habit buttons
+  const selKey = dateKey(calY, calM, selDay);
+  const selH = records[selKey] || [];
+  const list = document.getElementById("habits-list");
+  list.innerHTML = "";
+  habits.forEach(h => {
+    const done = selH.includes(h.id);
+    const btn = document.createElement("button");
+    btn.className = "habit-btn";
+    btn.style.border = `2px solid ${h.color}`;
+    btn.style.background = done ? h.color : "transparent";
+    btn.style.color = done ? "#fff" : h.color;
+    btn.onclick = () => toggleHabit(h.id);
+    btn.innerHTML = `<span class="habit-dot" style="background:${done?"#fff":h.color}"></span>${h.name}<button class="habit-remove" onclick="event.stopPropagation();removeHabit('${h.id}')">✕</button>`;
+    list.appendChild(btn);
+  });
+}
+
+function toggleHabit(hid) {
+  const key = dateKey(calY, calM, selDay);
+  const cur = records[key] || [];
+  records[key] = cur.includes(hid) ? cur.filter(x => x !== hid) : [...cur, hid];
+  save(); render();
+}
+
+function removeHabit(id) {
+  habits = habits.filter(h => h.id !== id);
+  save(); render();
+}
+
+function showAddForm() {
+  document.getElementById("add-area").classList.add("hidden");
+  document.getElementById("add-form").classList.remove("hidden");
+  // Color grid
+  const cg = document.getElementById("color-grid"); cg.innerHTML = "";
+  PRESET_COLORS.forEach(c => {
+    const s = document.createElement("div");
+    s.className = "color-swatch" + (c === newColor ? " selected" : "");
+    s.style.background = c;
+    s.onclick = () => { newColor = c; document.getElementById("add-confirm-btn").style.background = c; document.querySelectorAll(".color-swatch").forEach(x => x.classList.remove("selected")); s.classList.add("selected"); };
+    cg.appendChild(s);
+  });
+  document.getElementById("add-confirm-btn").style.background = newColor;
+}
+
+function hideAddForm() {
+  document.getElementById("add-form").classList.add("hidden");
+  document.getElementById("add-area").classList.remove("hidden");
+  document.getElementById("new-name").value = "";
+}
+
+function addHabit() {
+  const name = document.getElementById("new-name").value.trim();
+  if (!name) return;
+  habits.push({ id: genId(), name, color: newColor });
+  save(); hideAddForm(); render();
+}
+
+function calcStats(hid, y, m) {
+  const dim = new Date(y, m+1, 0).getDate();
+  let monthCount = 0;
+  for (let d = 1; d <= dim; d++) if ((records[dateKey(y,m,d)]||[]).includes(hid)) monthCount++;
+  let streak = 0, cur = new Date();
+  while (true) {
+    const k = dateKey(cur.getFullYear(), cur.getMonth(), cur.getDate());
+    if ((records[k]||[]).includes(hid)) { streak++; cur.setDate(cur.getDate()-1); } else break;
+  }
+  const allKeys = Object.keys(records).filter(k=>(records[k]||[]).includes(hid)).sort();
+  let best=0, run=0, prev=null;
+  for (const k of allKeys) {
+    const d = new Date(k);
+    if (prev) { const diff=(d-prev)/86400000; run=diff===1?run+1:1; } else run=1;
+    if (run>best) best=run; prev=d;
+  }
+  return { monthCount, streak, best, pct: Math.round(monthCount/dim*100) };
+}
+
+function renderStats() {
+  document.getElementById("stats-sub").textContent = `${calY}年 ${MONTHS[calM]} 基準`;
+  const container = document.getElementById("stat-cards");
+  container.innerHTML = "";
+  if (habits.length === 0) { container.innerHTML = '<p class="empty">項目がまだありません</p>'; return; }
+  habits.forEach(h => {
+    const { monthCount, streak, best, pct } = calcStats(h.id, calY, calM);
+    container.innerHTML += `
+      <div class="stat-card">
+        <div class="stat-title"><div class="stat-title-dot" style="background:${h.color}"></div>${h.name}</div>
+        <div class="stat-grid">
+          <div class="mini-card"><div class="mini-val" style="color:${h.color}">${monthCount}<span class="mini-unit">日</span></div><div class="mini-label">今月の回数</div></div>
+          <div class="mini-card"><div class="mini-val" style="color:${h.color}">${streak}<span class="mini-unit">日</span></div><div class="mini-label">連続日数</div></div>
+          <div class="mini-card"><div class="mini-val" style="color:${h.color}">${best}<span class="mini-unit">日</span></div><div class="mini-label">最高記録</div></div>
+        </div>
+        <div class="pct-header"><span>今月の達成率</span><span style="color:${h.color};font-weight:700">${pct}%</span></div>
+        <div class="pct-bar-bg"><div class="pct-bar" style="width:${pct}%;background:${h.color}"></div></div>
+      </div>`;
+  });
+}
+
+render();
+</script>
+</body>
+</html>
