@@ -25,18 +25,14 @@
 
 ```
 #bottom-nav {
-  position: fixed !important;
-  bottom: 24px !important;
-  left: calc(100vw - 68px) !important;
-  top: auto !important;
+  position: fixed;
   z-index: 9999;
-  display: flex !important;
-  flex-direction: column !important;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
-  width: 52px !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: none !important;
+  padding: 0;
+  background: transparent;
+  border: none;
 }
 .nav-btn {
   width: 52px; height: 52px; border-radius: 50%;
@@ -246,6 +242,19 @@ function switchPage(p) {
 function prevMonth() {
   if (calM === 0) { calY--; calM = 11; } else calM--;
   selDay = 1; render();
+
+// ナビを右下に強制配置
+function positionNav() {
+  const nav = document.getElementById("bottom-nav");
+  const w = window.innerWidth;
+  nav.style.bottom = "24px";
+  nav.style.left = (w - 68) + "px";
+  nav.style.top = "auto";
+  nav.style.right = "auto";
+  nav.style.width = "52px";
+}
+positionNav();
+window.addEventListener("resize", positionNav);
 }
 function nextMonth() {
   if (calM === 11) { calY++; calM = 0; } else calM++;
