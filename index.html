@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
@@ -22,111 +23,90 @@
     }
     #app { max-width: 420px; margin: 0 auto; padding: 20px 16px 0; }
 
-    #bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-      background: #162032;
-      border-top: 1px solid #334155;
-      display: flex;
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-    .nav-btn {
-      flex: 1; background: transparent; border: none;
-      padding: 10px 0 8px; cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-    }
-    .nav-btn .tab-icon svg { display: block; }
-    .nav-btn .label { font-size: 11px; font-weight: 600; color: #475569; }
-    .nav-btn.active .label { color: #60A5FA; }
-    .nav-btn .bar { width: 24px; height: 2px; background: #60A5FA; border-radius: 2px; display: none; }
-    .nav-btn.active .bar { display: block; }
+```
+#bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: #162032; border-top: 1px solid #334155;
+  display: flex; padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-btn { flex: 1; background: transparent; border: none; padding: 10px 0 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.nav-btn .label { font-size: 11px; font-weight: 600; color: #475569; }
+.nav-btn.active .label { color: #60A5FA; }
+.nav-btn .bar { width: 24px; height: 2px; background: #60A5FA; border-radius: 2px; display: none; }
+.nav-btn.active .bar { display: block; }
 
-    h1 { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 20px; letter-spacing: 3px; color: #f1f5f9; }
-    .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .month-nav button { background: transparent; border: none; color: #94A3B8; font-size: 24px; cursor: pointer; padding: 0 12px; }
-    .month-nav span { font-weight: 700; font-size: 16px; color: #f1f5f9; }
+h1 { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 20px; letter-spacing: 3px; color: #f1f5f9; }
+.month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.month-nav button { background: transparent; border: none; color: #94A3B8; font-size: 24px; cursor: pointer; padding: 0 12px; }
+.month-nav span { font-weight: 700; font-size: 16px; color: #f1f5f9; }
 
-    .cal-wrap { background: #3d4f66; border-radius: 16px; padding: 12px 8px; margin-bottom: 20px; }
-    .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 6px; }
-    .weekday { text-align: center; font-size: 11px; font-weight: 600; color: #94A3B8; padding-bottom: 4px; }
-    .weekday.sun { color: #F87171; } .weekday.sat { color: #60A5FA; }
-    .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-    .day-cell {
-      border-radius: 10px; padding: 4px 2px 3px; cursor: pointer;
-      background: transparent; border: 1.5px solid transparent;
-      min-height: 44px; display: flex; flex-direction: column; align-items: center;
-    }
-    .day-cell.selected { background: #4a5e78; }
-    .day-cell.today { border-color: #60A5FA; }
-    .day-num { font-size: 12px; color: #cbd5e1; margin-bottom: 3px; }
-    .day-cell.today .day-num { color: #60A5FA; font-weight: 700; }
-    .day-cell.selected .day-num { font-weight: 700; color: #f1f5f9; }
-    .dots { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; max-width: 36px; }
-    .dot { width: 7px; height: 7px; border-radius: 50%; }
+.cal-wrap { background: #3d4f66; border-radius: 16px; padding: 12px 8px; margin-bottom: 20px; }
+.weekdays { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 6px; }
+.weekday { text-align: center; font-size: 11px; font-weight: 600; color: #94A3B8; padding-bottom: 4px; }
+.weekday.sun { color: #F87171; } .weekday.sat { color: #60A5FA; }
+.days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+.day-cell { border-radius: 10px; padding: 4px 2px 3px; cursor: pointer; background: transparent; border: 1.5px solid transparent; min-height: 44px; display: flex; flex-direction: column; align-items: center; }
+.day-cell.selected { background: #4a5e78; }
+.day-cell.today { border-color: #60A5FA; }
+.day-num { font-size: 12px; color: #cbd5e1; margin-bottom: 3px; }
+.day-cell.today .day-num { color: #60A5FA; font-weight: 700; }
+.day-cell.selected .day-num { font-weight: 700; color: #f1f5f9; }
+.dots { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; max-width: 36px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; }
 
-    .day-label {
-      text-align: center; margin-bottom: 16px;
-      font-size: 16px; font-weight: 700; color: #f1f5f9;
-      background: #3d4f66; border-radius: 10px; padding: 10px 16px;
-      border-left: 4px solid #60A5FA;
-    }
-    .stats-sub-label {
-      background: #3d4f66; border-radius: 10px; padding: 10px 16px;
-      margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
-    }
-    .stats-sub-label .month-text {
-      font-size: 16px; font-weight: 700; color: #f1f5f9;
-    }
-    .stats-sub-label .month-badge {
-      margin-left: auto; background: #60A5FA; color: #fff;
-      font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px;
-    }
-    .habits-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; justify-content: center; }
-    .habit-btn {
-      display: flex; align-items: center; gap: 7px;
-      padding: 9px 16px; border-radius: 50px;
-      font-weight: 600; font-size: 13px; cursor: pointer;
-      transition: all 0.15s; background: transparent;
-    }
-    .habit-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-    .habit-remove { margin-left: 4px; opacity: 0.5; font-size: 12px; cursor: pointer; background: none; border: none; color: inherit; }
+.day-label { text-align: center; margin-bottom: 16px; font-size: 16px; font-weight: 700; color: #f1f5f9; background: #3d4f66; border-radius: 10px; padding: 10px 16px; border-left: 4px solid #60A5FA; }
+.habits-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; justify-content: center; }
+.habit-btn { display: flex; align-items: center; gap: 7px; padding: 9px 16px; border-radius: 50px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.15s; background: transparent; }
+.habit-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.habit-remove { margin-left: 4px; opacity: 0.5; font-size: 12px; cursor: pointer; background: none; border: none; color: inherit; }
 
-    .add-btn {
-      width: 100%; background: transparent; border: 2px dashed #334155;
-      border-radius: 12px; padding: 10px 0; color: #475569;
-      font-size: 14px; cursor: pointer; font-weight: 600;
-    }
-    .add-form { background: #3d4f66; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
-    .add-form input {
-      width: 100%; background: #1e293b; border: 1px solid #334155;
-      border-radius: 8px; padding: 8px 12px; color: #f1f5f9;
-      font-size: 14px; margin-bottom: 10px;
-    }
-    .color-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
-    .color-swatch { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
-    .color-swatch.selected { border-color: #fff; }
-    .form-btns { display: flex; gap: 8px; }
-    .form-btns button { flex: 1; border: none; border-radius: 8px; padding: 9px 0; font-weight: 700; font-size: 14px; cursor: pointer; color: #fff; }
-    .btn-cancel { background: #334155; }
+.add-btn { width: 100%; background: transparent; border: 2px dashed #334155; border-radius: 12px; padding: 10px 0; color: #475569; font-size: 14px; cursor: pointer; font-weight: 600; }
+.add-form { background: #3d4f66; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+.add-form input { width: 100%; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; color: #f1f5f9; font-size: 14px; margin-bottom: 10px; }
+.color-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.color-swatch { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
+.color-swatch.selected { border-color: #fff; }
+.form-btns { display: flex; gap: 8px; }
+.form-btns button { flex: 1; border: none; border-radius: 8px; padding: 9px 0; font-weight: 700; font-size: 14px; cursor: pointer; color: #fff; }
+.btn-cancel { background: #334155; }
 
-    .stats-sub { display: none; }
-    .stat-cards { display: flex; flex-direction: column; gap: 12px; }
-    .stat-card { background: #3d4f66; border-radius: 16px; padding: 16px 18px; }
-    .stat-title { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-weight: 700; font-size: 15px; color: #f1f5f9; }
-    .stat-title-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .stat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-    .mini-card { background: #2e3f52; border-radius: 10px; padding: 10px 8px; text-align: center; }
-    .mini-val { font-size: 22px; font-weight: 800; }
-    .mini-unit { font-size: 12px; font-weight: 400; color: #94A3B8; margin-left: 2px; }
-    .mini-label { font-size: 10px; color: #94A3B8; margin-top: 3px; }
-    .pct-header { display: flex; justify-content: space-between; font-size: 11px; color: #94A3B8; margin-bottom: 5px; }
-    .pct-bar-bg { background: #2e3f52; border-radius: 99px; height: 6px; overflow: hidden; }
-    .pct-bar { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
-    .empty { text-align: center; color: #475569; margin-top: 60px; }
-    .hidden { display: none !important; }
+/* Stats */
+.stats-month-label { background: #3d4f66; border-radius: 10px; padding: 10px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.stats-month-label .month-text { font-size: 16px; font-weight: 700; color: #f1f5f9; }
+.stats-month-label .month-badge { margin-left: auto; background: #60A5FA; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; }
+
+/* 通算ビン */
+.total-bin-wrap { margin-bottom: 20px; }
+.bin-section-label { font-size: 12px; font-weight: 600; color: #94A3B8; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.total-bin { background: #2e3f52; border-radius: 12px; border: 2px solid #4a5e78; padding: 12px; min-height: 70px; display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-end; }
+.bin-dot { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; }
+.bin-dot-100 { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: #fff; position: relative; }
+.bin-dot-100::after { content: "×100"; position: absolute; font-size: 8px; font-weight: 800; color: #fff; }
+.total-bin-count { text-align: right; font-size: 11px; color: #60A5FA; font-weight: 700; margin-top: 6px; }
+
+/* 習慣別ビン */
+.habit-bins { display: flex; flex-direction: column; gap: 12px; }
+.habit-bin-card { background: #3d4f66; border-radius: 16px; padding: 14px 16px; }
+.habit-bin-title { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.habit-bin-title-dot { width: 10px; height: 10px; border-radius: 50%; }
+.habit-bin-title-name { font-size: 14px; font-weight: 700; color: #f1f5f9; }
+.habit-bin-title-count { margin-left: auto; font-size: 12px; font-weight: 700; }
+.habit-bin { background: #2e3f52; border-radius: 10px; border: 1.5px solid #4a5e78; padding: 10px; min-height: 50px; display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-end; }
+
+/* 達成率バー */
+.pct-header { display: flex; justify-content: space-between; font-size: 11px; color: #94A3B8; margin-top: 10px; margin-bottom: 4px; }
+.pct-bar-bg { background: #1e293b; border-radius: 99px; height: 5px; overflow: hidden; }
+.pct-bar { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
+
+.empty { text-align: center; color: #475569; margin-top: 60px; }
+.hidden { display: none !important; }
+```
+
   </style>
 </head>
 <body>
 <div id="app">
+  <!-- Calendar -->
   <div id="page-calendar">
     <h1>HabitTracker</h1>
     <div class="month-nav">
@@ -136,19 +116,15 @@
     </div>
     <div class="cal-wrap">
       <div class="weekdays">
-        <div class="weekday sun">日</div>
-        <div class="weekday">月</div><div class="weekday">火</div>
-        <div class="weekday">水</div><div class="weekday">木</div>
-        <div class="weekday">金</div>
+        <div class="weekday sun">日</div><div class="weekday">月</div><div class="weekday">火</div>
+        <div class="weekday">水</div><div class="weekday">木</div><div class="weekday">金</div>
         <div class="weekday sat">土</div>
       </div>
       <div class="days-grid" id="days-grid"></div>
     </div>
     <div class="day-label" id="day-label"></div>
     <div class="habits-list" id="habits-list"></div>
-    <div id="add-area">
-      <button class="add-btn" onclick="showAddForm()">＋ 項目を追加</button>
-    </div>
+    <div id="add-area"><button class="add-btn" onclick="showAddForm()">＋ 項目を追加</button></div>
     <div class="add-form hidden" id="add-form">
       <input type="text" id="new-name" placeholder="項目名を入力..." onkeydown="if(event.key==='Enter')addHabit()" />
       <div class="color-grid" id="color-grid"></div>
@@ -159,10 +135,25 @@
     </div>
   </div>
 
+  <!-- Stats -->
+
   <div id="page-stats" class="hidden">
     <h1>HabitTracker</h1>
-    <p class="stats-sub" id="stats-sub"></p>
-    <div class="stat-cards" id="stat-cards"></div>
+    <div id="stats-month-label" class="stats-month-label"></div>
+
+```
+<!-- 通算ビン -->
+<div class="total-bin-wrap">
+  <div class="bin-section-label">🫙 全部（通算）</div>
+  <div class="total-bin" id="total-bin"></div>
+  <div class="total-bin-count" id="total-bin-count"></div>
+</div>
+
+<!-- 習慣別ビン -->
+<div class="bin-section-label">📊 習慣別（今月）</div>
+<div class="habit-bins" id="habit-bins"></div>
+```
+
   </div>
 </div>
 
@@ -195,10 +186,8 @@
         <line x1="-40" y1="56"  x2="40" y2="56"  stroke="#4a5e78" stroke-width="1"/>
         <line x1="-40" y1="30" x2="-40" y2="100" stroke="#4a5e78" stroke-width="1.5"/>
         <polyline points="-30,90 -10,65 10,75 30,42" fill="none" stroke="#60A5FA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="-30" cy="90" r="4" fill="#60A5FA"/>
-        <circle cx="-10" cy="65" r="4" fill="#60A5FA"/>
-        <circle cx="10"  cy="75" r="4" fill="#60A5FA"/>
-        <circle cx="30"  cy="42" r="4" fill="#60A5FA"/>
+        <circle cx="-30" cy="90" r="4" fill="#60A5FA"/><circle cx="-10" cy="65" r="4" fill="#60A5FA"/>
+        <circle cx="10"  cy="75" r="4" fill="#60A5FA"/><circle cx="30"  cy="42" r="4" fill="#60A5FA"/>
       </svg>
     </span>
     <span class="label">統計</span>
@@ -211,7 +200,7 @@ const MONTHS = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","
 const PRESET_COLORS = ["#F87171","#FB923C","#FACC15","#4ADE80","#34D399","#38BDF8","#60A5FA","#F472B6","#A78BFA","#94A3B8"];
 const DEFAULT_HABITS = [
   {id:"1",name:"ランニング",color:"#F87171"},
-  {id:"2",name:"筋トレ",color:"#34D399"},
+  {id:"2",name:"筋トレ",color:"#4ADE80"},
   {id:"3",name:"読書",color:"#FACC15"},
   {id:"4",name:"英語学習",color:"#60A5FA"},
 ];
@@ -227,7 +216,6 @@ function save() {
   localStorage.setItem("habits", JSON.stringify(habits));
   localStorage.setItem("records", JSON.stringify(records));
 }
-
 function dateKey(y, m, d) { return `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`; }
 function genId() { return Math.random().toString(36).slice(2,9); }
 
@@ -252,12 +240,11 @@ function nextMonth() {
 function render() {
   document.getElementById("month-label").textContent = `${calY}年 ${MONTHS[calM]}`;
   document.getElementById("day-label").textContent = `${calY}年${MONTHS[calM]}${selDay}日 の記録`;
-
   const first = new Date(calY, calM, 1).getDay();
   const total = new Date(calY, calM+1, 0).getDate();
   const grid = document.getElementById("days-grid");
   grid.innerHTML = "";
-  for (let i = 0; i < first; i++) { const e = document.createElement("div"); grid.appendChild(e); }
+  for (let i = 0; i < first; i++) grid.appendChild(document.createElement("div"));
   for (let d = 1; d <= total; d++) {
     const key = dateKey(calY, calM, d);
     const dayH = records[key] || [];
@@ -269,19 +256,18 @@ function render() {
     const num = document.createElement("div");
     num.className = "day-num"; num.textContent = d;
     cell.appendChild(num);
-    const dots = document.createElement("div");
-    dots.className = "dots";
+    const dotsEl = document.createElement("div");
+    dotsEl.className = "dots";
     dayH.forEach(hid => {
       const h = habits.find(x => x.id === hid);
       if (!h) return;
       const dot = document.createElement("div");
       dot.className = "dot"; dot.style.background = h.color;
-      dots.appendChild(dot);
+      dotsEl.appendChild(dot);
     });
-    cell.appendChild(dots);
+    cell.appendChild(dotsEl);
     grid.appendChild(cell);
   }
-
   const selKey = dateKey(calY, calM, selDay);
   const selH = records[selKey] || [];
   const list = document.getElementById("habits-list");
@@ -305,11 +291,7 @@ function toggleHabit(hid) {
   records[key] = cur.includes(hid) ? cur.filter(x => x !== hid) : [...cur, hid];
   save(); render();
 }
-
-function removeHabit(id) {
-  habits = habits.filter(h => h.id !== id);
-  save(); render();
-}
+function removeHabit(id) { habits = habits.filter(h => h.id !== id); save(); render(); }
 
 function showAddForm() {
   document.getElementById("add-area").classList.add("hidden");
@@ -336,13 +318,11 @@ function showAddForm() {
     if (scrollY > window.scrollY) window.scrollTo({ top: scrollY, behavior: "smooth" });
   }, 50);
 }
-
 function hideAddForm() {
   document.getElementById("add-form").classList.add("hidden");
   document.getElementById("add-area").classList.remove("hidden");
   document.getElementById("new-name").value = "";
 }
-
 function addHabit() {
   const name = document.getElementById("new-name").value.trim();
   if (!name) return;
@@ -350,54 +330,108 @@ function addHabit() {
   save(); hideAddForm(); render();
 }
 
-function calcStats(hid, y, m) {
-  const dim = new Date(y, m+1, 0).getDate();
-  let monthCount = 0;
-  for (let d = 1; d <= dim; d++) if ((records[dateKey(y,m,d)]||[]).includes(hid)) monthCount++;
-  let streak = 0, cur = new Date();
-  while (true) {
-    const k = dateKey(cur.getFullYear(), cur.getMonth(), cur.getDate());
-    if ((records[k]||[]).includes(hid)) { streak++; cur.setDate(cur.getDate()-1); } else break;
+// ---- Stats ----
+function getAllDots() {
+  // 全recordsから全ドットを収集（通算）
+  const dots = [];
+  Object.values(records).forEach(hids => {
+    hids.forEach(hid => {
+      const h = habits.find(x => x.id === hid);
+      if (h) dots.push(h.color);
+    });
+  });
+  return dots;
+}
+
+function renderTotalBin(dots) {
+  const bin = document.getElementById("total-bin");
+  const countEl = document.getElementById("total-bin-count");
+  bin.innerHTML = "";
+  const total = dots.length;
+  const hundreds = Math.floor(total / 100);
+  const remainder = total % 100;
+
+  // ×100ドット
+  for (let i = 0; i < hundreds; i++) {
+    const d = document.createElement("div");
+    d.className = "bin-dot-100";
+    // グラデーション風に複数色混ぜたサークル
+    d.style.background = `conic-gradient(#F87171 0% 25%, #4ADE80 25% 50%, #FACC15 50% 75%, #60A5FA 75% 100%)`;
+    d.style.borderRadius = "50%";
+    d.style.width = "36px";
+    d.style.height = "36px";
+    d.style.flexShrink = "0";
+    d.style.position = "relative";
+    d.style.display = "flex";
+    d.style.alignItems = "center";
+    d.style.justifyContent = "center";
+    // 中央に白丸＋テキスト
+    const inner = document.createElement("div");
+    inner.style.cssText = "width:22px;height:22px;border-radius:50%;background:#2e3f52;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;color:#f1f5f9;";
+    inner.textContent = "×100";
+    d.appendChild(inner);
+    bin.appendChild(d);
   }
-  const allKeys = Object.keys(records).filter(k=>(records[k]||[]).includes(hid)).sort();
-  let best=0, run=0, prev=null;
-  for (const k of allKeys) {
-    const d = new Date(k);
-    if (prev) { const diff=(d-prev)/86400000; run=diff===1?run+1:1; } else run=1;
-    if (run>best) best=run; prev=d;
-  }
-  return { monthCount, streak, best, pct: Math.round(monthCount/dim*100) };
+
+  // 残りの通常ドット（シャッフルして色混ぜ）
+  const shuffled = [...dots].slice(hundreds * 100);
+  shuffled.forEach(color => {
+    const d = document.createElement("div");
+    d.className = "bin-dot";
+    d.style.background = color;
+    bin.appendChild(d);
+  });
+
+  countEl.textContent = `通算 ${total} ドット`;
 }
 
 function renderStats() {
-  document.getElementById("stats-sub").textContent = "";
-  const existingLabel = document.getElementById("stats-month-label");
-  if (existingLabel) existingLabel.remove();
-  const labelEl = document.createElement("div");
-  labelEl.id = "stats-month-label";
-  labelEl.className = "stats-sub-label";
-  labelEl.innerHTML = `<span class="month-text">📅 ${calY}年 ${MONTHS[calM]}</span><span class="month-badge">今月</span>`;
-  document.getElementById("stat-cards").before(labelEl);
-  const container = document.getElementById("stat-cards");
+  // 月ラベル
+  const lbl = document.getElementById("stats-month-label");
+  lbl.innerHTML = `<span class="month-text">📅 ${calY}年 ${MONTHS[calM]}</span><span class="month-badge">今月</span>`;
+
+  // 通算ビン
+  renderTotalBin(getAllDots());
+
+  // 習慣別ビン
+  const container = document.getElementById("habit-bins");
   container.innerHTML = "";
   if (habits.length === 0) { container.innerHTML = '<p class="empty">項目がまだありません</p>'; return; }
+
+  const dim = new Date(calY, calM+1, 0).getDate();
   habits.forEach(h => {
-    const { monthCount, streak, best, pct } = calcStats(h.id, calY, calM);
-    container.innerHTML += `
-      <div class="stat-card">
-        <div class="stat-title"><div class="stat-title-dot" style="background:${h.color}"></div>${h.name}</div>
-        <div class="stat-grid">
-          <div class="mini-card"><div class="mini-val" style="color:${h.color}">${monthCount}<span class="mini-unit">日</span></div><div class="mini-label">今月の回数</div></div>
-          <div class="mini-card"><div class="mini-val" style="color:${h.color}">${streak}<span class="mini-unit">日</span></div><div class="mini-label">連続日数</div></div>
-          <div class="mini-card"><div class="mini-val" style="color:${h.color}">${best}<span class="mini-unit">日</span></div><div class="mini-label">最高記録</div></div>
-        </div>
-        <div class="pct-header"><span>今月の達成率</span><span style="color:${h.color};font-weight:700">${pct}%</span></div>
-        <div class="pct-bar-bg"><div class="pct-bar" style="width:${pct}%;background:${h.color}"></div></div>
-      </div>`;
+    // 今月のドット収集
+    const monthDots = [];
+    for (let d = 1; d <= dim; d++) {
+      if ((records[dateKey(calY, calM, d)] || []).includes(h.id)) monthDots.push(h.color);
+    }
+    const pct = Math.round(monthDots.length / dim * 100);
+
+    const card = document.createElement("div");
+    card.className = "habit-bin-card";
+    card.innerHTML = `
+      <div class="habit-bin-title">
+        <div class="habit-bin-title-dot" style="background:${h.color}"></div>
+        <span class="habit-bin-title-name">${h.name}</span>
+        <span class="habit-bin-title-count" style="color:${h.color}">${monthDots.length}日</span>
+      </div>
+      <div class="habit-bin" id="hbin-${h.id}"></div>
+      <div class="pct-header"><span>今月の達成率</span><span style="color:${h.color};font-weight:700">${pct}%</span></div>
+      <div class="pct-bar-bg"><div class="pct-bar" style="width:${pct}%;background:${h.color}"></div></div>`;
+    container.appendChild(card);
+
+    const binEl = document.getElementById(`hbin-${h.id}`);
+    monthDots.forEach(color => {
+      const dot = document.createElement("div");
+      dot.className = "bin-dot";
+      dot.style.background = color;
+      binEl.appendChild(dot);
+    });
   });
 }
 
 render();
 </script>
+
 </body>
 </html>
