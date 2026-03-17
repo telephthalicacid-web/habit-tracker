@@ -22,13 +22,14 @@
     }
     #app { max-width: 420px; margin: 0 auto; padding: 20px 16px 0; }
 
+    /* ナビゲーションを横並びに修正 */
     #bottom-nav {
       position: fixed;
-      bottom: 24px; /* ここで下からの位置を固定 */
-      right: 16px;  /* ここで右からの位置を固定 */
+      bottom: 24px;
+      right: 16px;
       z-index: 9999;
       display: flex;
-      flex-direction: column;
+      flex-direction: row; /* 横並びに変更 */
       gap: 12px;
       padding: 0;
       background: transparent;
@@ -147,14 +148,12 @@
     <h1>HabitTracker</h1>
     <div id="stats-month-label" class="stats-month-label"></div>
 
-    <!-- 通算ビン -->
     <div class="total-bin-wrap">
       <div class="bin-section-label">🫙 全部（通算）</div>
       <div class="total-bin" id="total-bin"></div>
       <div class="total-bin-count" id="total-bin-count"></div>
     </div>
 
-    <!-- 習慣別ビン -->
     <div class="bin-section-label">📊 習慣別（今月）</div>
     <div class="habit-bins" id="habit-bins"></div>
   </div>
@@ -177,8 +176,6 @@
         <circle cx="21" cy="24" r="2.2" fill="#3d4f66" stroke="#475569" stroke-width="0.8"/>
       </svg>
     </span>
-    <span class="label">カレンダー</span>
-    <span class="bar"></span>
   </button>
   <button class="nav-btn" id="nav-stats" onclick="switchPage('stats')">
     <span class="tab-icon">
@@ -195,8 +192,6 @@
         <circle cx="23" cy="8"  r="1.8" fill="#60A5FA"/>
       </svg>
     </span>
-    <span class="label">統計</span>
-    <span class="bar"></span>
   </button>
 </div>
 
@@ -315,13 +310,6 @@ function showAddForm() {
     cg.appendChild(s);
   });
   document.getElementById("add-confirm-btn").style.background = newColor;
-  setTimeout(() => {
-    const form = document.getElementById("add-form");
-    const navH = document.getElementById("bottom-nav").offsetHeight;
-    const rect = form.getBoundingClientRect();
-    const scrollY = window.scrollY + rect.bottom - (window.innerHeight - navH);
-    if (scrollY > window.scrollY) window.scrollTo({ top: scrollY, behavior: "smooth" });
-  }, 50);
 }
 function hideAddForm() {
   document.getElementById("add-form").classList.add("hidden");
@@ -335,9 +323,7 @@ function addHabit() {
   save(); hideAddForm(); render();
 }
 
-// ---- Stats ----
 function getAllDots() {
-  // 全recordsから全ドットを収集（通算）
   const dots = [];
   Object.values(records).forEach(hids => {
     hids.forEach(hid => {
@@ -354,31 +340,16 @@ function renderTotalBin(dots) {
   bin.innerHTML = "";
   const total = dots.length;
   const hundreds = Math.floor(total / 100);
-  const remainder = total % 100;
-
-  // ×100ドット
   for (let i = 0; i < hundreds; i++) {
     const d = document.createElement("div");
     d.className = "bin-dot-100";
-    // グラデーション風に複数色混ぜたサークル
     d.style.background = `conic-gradient(#F87171 0% 25%, #4ADE80 25% 50%, #FACC15 50% 75%, #60A5FA 75% 100%)`;
-    d.style.borderRadius = "50%";
-    d.style.width = "36px";
-    d.style.height = "36px";
-    d.style.flexShrink = "0";
-    d.style.position = "relative";
-    d.style.display = "flex";
-    d.style.alignItems = "center";
-    d.style.justifyContent = "center";
-    // 中央に白丸＋テキスト
     const inner = document.createElement("div");
     inner.style.cssText = "width:22px;height:22px;border-radius:50%;background:#2e3f52;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;color:#f1f5f9;";
     inner.textContent = "×100";
     d.appendChild(inner);
     bin.appendChild(d);
   }
-
-  // 残りの通常ドット（シャッフルして色混ぜ）
   const shuffled = [...dots].slice(hundreds * 100);
   shuffled.forEach(color => {
     const d = document.createElement("div");
@@ -386,32 +357,23 @@ function renderTotalBin(dots) {
     d.style.background = color;
     bin.appendChild(d);
   });
-
   countEl.textContent = `通算 ${total} ドット`;
 }
 
 function renderStats() {
-  // 月ラベル
   const lbl = document.getElementById("stats-month-label");
   lbl.innerHTML = `<span class="month-text">📅 ${calY}年 ${MONTHS[calM]}</span><span class="month-badge">今月</span>`;
-
-  // 通算ビン
   renderTotalBin(getAllDots());
-
-  // 習慣別ビン
   const container = document.getElementById("habit-bins");
   container.innerHTML = "";
   if (habits.length === 0) { container.innerHTML = '<p class="empty">項目がまだありません</p>'; return; }
-
   const dim = new Date(calY, calM+1, 0).getDate();
   habits.forEach(h => {
-    // 今月のドット収集
     const monthDots = [];
     for (let d = 1; d <= dim; d++) {
       if ((records[dateKey(calY, calM, d)] || []).includes(h.id)) monthDots.push(h.color);
     }
     const pct = Math.round(monthDots.length / dim * 100);
-
     const card = document.createElement("div");
     card.className = "habit-bin-card";
     card.innerHTML = `
@@ -424,7 +386,6 @@ function renderStats() {
       <div class="pct-header"><span>今月の達成率</span><span style="color:${h.color};font-weight:700">${pct}%</span></div>
       <div class="pct-bar-bg"><div class="pct-bar" style="width:${pct}%;background:${h.color}"></div></div>`;
     container.appendChild(card);
-
     const binEl = document.getElementById(`hbin-${h.id}`);
     monthDots.forEach(color => {
       const dot = document.createElement("div");
@@ -434,7 +395,6 @@ function renderStats() {
     });
   });
 }
-
 render();
 </script>
 </body>
