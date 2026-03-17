@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
@@ -23,94 +22,93 @@
     }
     #app { max-width: 420px; margin: 0 auto; padding: 20px 16px 0; }
 
-```
-#bottom-nav {
-  position: fixed;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 0;
-  background: transparent;
-  border: none;
-}
-.nav-btn {
-  width: 52px; height: 52px; border-radius: 50%;
-  background: #2e3f52; border: 2px solid #334155;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-.nav-btn.active { border-color: #60A5FA; background: #3d4f66; }
-.nav-btn .label { display: none; }
-.nav-btn .bar { display: none; }
+    #bottom-nav {
+      position: fixed;
+      bottom: 24px; /* ここで下からの位置を固定 */
+      right: 16px;  /* ここで右からの位置を固定 */
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 0;
+      background: transparent;
+      border: none;
+    }
+    .nav-btn {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: #2e3f52; border: 2px solid #334155;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .nav-btn.active { border-color: #60A5FA; background: #3d4f66; }
+    .nav-btn .label { display: none; }
+    .nav-btn .bar { display: none; }
 
-h1 { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 20px; letter-spacing: 3px; color: #f1f5f9; }
-.month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.month-nav button { background: transparent; border: none; color: #94A3B8; font-size: 24px; cursor: pointer; padding: 0 12px; }
-.month-nav span { font-weight: 700; font-size: 16px; color: #f1f5f9; }
+    h1 { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 20px; letter-spacing: 3px; color: #f1f5f9; }
+    .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .month-nav button { background: transparent; border: none; color: #94A3B8; font-size: 24px; cursor: pointer; padding: 0 12px; }
+    .month-nav span { font-weight: 700; font-size: 16px; color: #f1f5f9; }
 
-.cal-wrap { background: #3d4f66; border-radius: 16px; padding: 12px 8px; margin-bottom: 20px; }
-.weekdays { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 6px; }
-.weekday { text-align: center; font-size: 11px; font-weight: 600; color: #94A3B8; padding-bottom: 4px; }
-.weekday.sun { color: #F87171; } .weekday.sat { color: #60A5FA; }
-.days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
-.day-cell { border-radius: 10px; padding: 4px 2px 3px; cursor: pointer; background: transparent; border: 1.5px solid transparent; min-height: 44px; display: flex; flex-direction: column; align-items: center; }
-.day-cell.selected { background: #4a5e78; }
-.day-cell.today { border-color: #60A5FA; }
-.day-num { font-size: 12px; color: #cbd5e1; margin-bottom: 3px; }
-.day-cell.today .day-num { color: #60A5FA; font-weight: 700; }
-.day-cell.selected .day-num { font-weight: 700; color: #f1f5f9; }
-.dots { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; max-width: 36px; }
-.dot { width: 7px; height: 7px; border-radius: 50%; }
+    .cal-wrap { background: #3d4f66; border-radius: 16px; padding: 12px 8px; margin-bottom: 20px; }
+    .weekdays { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 6px; }
+    .weekday { text-align: center; font-size: 11px; font-weight: 600; color: #94A3B8; padding-bottom: 4px; }
+    .weekday.sun { color: #F87171; } .weekday.sat { color: #60A5FA; }
+    .days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+    .day-cell { border-radius: 10px; padding: 4px 2px 3px; cursor: pointer; background: transparent; border: 1.5px solid transparent; min-height: 44px; display: flex; flex-direction: column; align-items: center; }
+    .day-cell.selected { background: #4a5e78; }
+    .day-cell.today { border-color: #60A5FA; }
+    .day-num { font-size: 12px; color: #cbd5e1; margin-bottom: 3px; }
+    .day-cell.today .day-num { color: #60A5FA; font-weight: 700; }
+    .day-cell.selected .day-num { font-weight: 700; color: #f1f5f9; }
+    .dots { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; max-width: 36px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; }
 
-.day-label { text-align: center; margin-bottom: 16px; font-size: 16px; font-weight: 700; color: #f1f5f9; background: #3d4f66; border-radius: 10px; padding: 10px 16px; border-left: 4px solid #60A5FA; }
-.habits-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; justify-content: center; }
-.habit-btn { display: flex; align-items: center; gap: 7px; padding: 9px 16px; border-radius: 50px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.15s; background: transparent; }
-.habit-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-.habit-remove { margin-left: 4px; opacity: 0.5; font-size: 12px; cursor: pointer; background: none; border: none; color: inherit; }
+    .day-label { text-align: center; margin-bottom: 16px; font-size: 16px; font-weight: 700; color: #f1f5f9; background: #3d4f66; border-radius: 10px; padding: 10px 16px; border-left: 4px solid #60A5FA; }
+    .habits-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; justify-content: center; }
+    .habit-btn { display: flex; align-items: center; gap: 7px; padding: 9px 16px; border-radius: 50px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.15s; background: transparent; }
+    .habit-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .habit-remove { margin-left: 4px; opacity: 0.5; font-size: 12px; cursor: pointer; background: none; border: none; color: inherit; }
 
-.add-btn { width: 100%; background: transparent; border: 2px dashed #334155; border-radius: 12px; padding: 10px 0; color: #475569; font-size: 14px; cursor: pointer; font-weight: 600; }
-.add-form { background: #3d4f66; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
-.add-form input { width: 100%; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; color: #f1f5f9; font-size: 14px; margin-bottom: 10px; }
-.color-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
-.color-swatch { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
-.color-swatch.selected { border-color: #fff; }
-.form-btns { display: flex; gap: 8px; }
-.form-btns button { flex: 1; border: none; border-radius: 8px; padding: 9px 0; font-weight: 700; font-size: 14px; cursor: pointer; color: #fff; }
-.btn-cancel { background: #334155; }
+    .add-btn { width: 100%; background: transparent; border: 2px dashed #334155; border-radius: 12px; padding: 10px 0; color: #475569; font-size: 14px; cursor: pointer; font-weight: 600; }
+    .add-form { background: #3d4f66; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+    .add-form input { width: 100%; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; color: #f1f5f9; font-size: 14px; margin-bottom: 10px; }
+    .color-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+    .color-swatch { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
+    .color-swatch.selected { border-color: #fff; }
+    .form-btns { display: flex; gap: 8px; }
+    .form-btns button { flex: 1; border: none; border-radius: 8px; padding: 9px 0; font-weight: 700; font-size: 14px; cursor: pointer; color: #fff; }
+    .btn-cancel { background: #334155; }
 
-/* Stats */
-.stats-month-label { background: #3d4f66; border-radius: 10px; padding: 10px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-.stats-month-label .month-text { font-size: 16px; font-weight: 700; color: #f1f5f9; }
-.stats-month-label .month-badge { margin-left: auto; background: #60A5FA; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; }
+    /* Stats */
+    .stats-month-label { background: #3d4f66; border-radius: 10px; padding: 10px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .stats-month-label .month-text { font-size: 16px; font-weight: 700; color: #f1f5f9; }
+    .stats-month-label .month-badge { margin-left: auto; background: #60A5FA; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; }
 
-/* 通算ビン */
-.total-bin-wrap { margin-bottom: 20px; }
-.bin-section-label { font-size: 12px; font-weight: 600; color: #94A3B8; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-.total-bin { background: #2e3f52; border-radius: 12px; border: 2px solid #4a5e78; padding: 12px; min-height: 70px; display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-end; }
-.bin-dot { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; }
-.bin-dot-100 { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: #fff; position: relative; }
-.bin-dot-100::after { content: "×100"; position: absolute; font-size: 8px; font-weight: 800; color: #fff; }
-.total-bin-count { text-align: right; font-size: 11px; color: #60A5FA; font-weight: 700; margin-top: 6px; }
+    /* 通算ビン */
+    .total-bin-wrap { margin-bottom: 20px; }
+    .bin-section-label { font-size: 12px; font-weight: 600; color: #94A3B8; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .total-bin { background: #2e3f52; border-radius: 12px; border: 2px solid #4a5e78; padding: 12px; min-height: 70px; display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-end; }
+    .bin-dot { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; }
+    .bin-dot-100 { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: #fff; position: relative; }
+    .bin-dot-100::after { content: "×100"; position: absolute; font-size: 8px; font-weight: 800; color: #fff; }
+    .total-bin-count { text-align: right; font-size: 11px; color: #60A5FA; font-weight: 700; margin-top: 6px; }
 
-/* 習慣別ビン */
-.habit-bins { display: flex; flex-direction: column; gap: 12px; }
-.habit-bin-card { background: #3d4f66; border-radius: 16px; padding: 14px 16px; }
-.habit-bin-title { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.habit-bin-title-dot { width: 10px; height: 10px; border-radius: 50%; }
-.habit-bin-title-name { font-size: 14px; font-weight: 700; color: #f1f5f9; }
-.habit-bin-title-count { margin-left: auto; font-size: 12px; font-weight: 700; }
-.habit-bin { background: #2e3f52; border-radius: 10px; border: 1.5px solid #4a5e78; padding: 10px; min-height: 50px; display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-end; }
+    /* 習慣別ビン */
+    .habit-bins { display: flex; flex-direction: column; gap: 12px; }
+    .habit-bin-card { background: #3d4f66; border-radius: 16px; padding: 14px 16px; }
+    .habit-bin-title { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .habit-bin-title-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .habit-bin-title-name { font-size: 14px; font-weight: 700; color: #f1f5f9; }
+    .habit-bin-title-count { margin-left: auto; font-size: 12px; font-weight: 700; }
+    .habit-bin { background: #2e3f52; border-radius: 10px; border: 1.5px solid #4a5e78; padding: 10px; min-height: 50px; display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-end; }
 
-/* 達成率バー */
-.pct-header { display: flex; justify-content: space-between; font-size: 11px; color: #94A3B8; margin-top: 10px; margin-bottom: 4px; }
-.pct-bar-bg { background: #1e293b; border-radius: 99px; height: 5px; overflow: hidden; }
-.pct-bar { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
+    /* 達成率バー */
+    .pct-header { display: flex; justify-content: space-between; font-size: 11px; color: #94A3B8; margin-top: 10px; margin-bottom: 4px; }
+    .pct-bar-bg { background: #1e293b; border-radius: 99px; height: 5px; overflow: hidden; }
+    .pct-bar { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
 
-.empty { text-align: center; color: #475569; margin-top: 60px; }
-.hidden { display: none !important; }
-```
-
+    .empty { text-align: center; color: #475569; margin-top: 60px; }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -145,24 +143,20 @@ h1 { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 20px;
   </div>
 
   <!-- Stats -->
-
   <div id="page-stats" class="hidden">
     <h1>HabitTracker</h1>
     <div id="stats-month-label" class="stats-month-label"></div>
 
-```
-<!-- 通算ビン -->
-<div class="total-bin-wrap">
-  <div class="bin-section-label">🫙 全部（通算）</div>
-  <div class="total-bin" id="total-bin"></div>
-  <div class="total-bin-count" id="total-bin-count"></div>
-</div>
+    <!-- 通算ビン -->
+    <div class="total-bin-wrap">
+      <div class="bin-section-label">🫙 全部（通算）</div>
+      <div class="total-bin" id="total-bin"></div>
+      <div class="total-bin-count" id="total-bin-count"></div>
+    </div>
 
-<!-- 習慣別ビン -->
-<div class="bin-section-label">📊 習慣別（今月）</div>
-<div class="habit-bins" id="habit-bins"></div>
-```
-
+    <!-- 習慣別ビン -->
+    <div class="bin-section-label">📊 習慣別（今月）</div>
+    <div class="habit-bins" id="habit-bins"></div>
   </div>
 </div>
 
@@ -242,19 +236,6 @@ function switchPage(p) {
 function prevMonth() {
   if (calM === 0) { calY--; calM = 11; } else calM--;
   selDay = 1; render();
-
-// ナビを右下に強制配置
-function positionNav() {
-  const nav = document.getElementById("bottom-nav");
-  const w = window.innerWidth;
-  nav.style.bottom = "24px";
-  nav.style.left = (w - 68) + "px";
-  nav.style.top = "auto";
-  nav.style.right = "auto";
-  nav.style.width = "52px";
-}
-positionNav();
-window.addEventListener("resize", positionNav);
 }
 function nextMonth() {
   if (calM === 11) { calY++; calM = 0; } else calM++;
@@ -456,6 +437,5 @@ function renderStats() {
 
 render();
 </script>
-
 </body>
 </html>
